@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using coding_practice.helper;
 
-namespace coding_challenges
+namespace coding_practice
 {
     public static class Sort
     {
@@ -14,7 +12,6 @@ namespace coding_challenges
 
             Utility<int>.DisplaArray(N);
         }
-
         private static void Merge(int[] N, int begin, int end)
         {
             if (end <= begin)
@@ -28,7 +25,6 @@ namespace coding_challenges
             Merge(N, middle + 1, end);
             Merge(N, begin, middle, end);
         }
-
         private static void Merge(int[] N, int begin, int middle, int end)
         {
             int[] temp = (int[])N.Clone();

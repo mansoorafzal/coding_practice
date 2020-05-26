@@ -1,4 +1,6 @@
-﻿namespace coding_challenges
+﻿using coding_practice.helper;
+
+namespace coding_practice.data_structure
 {
     public class PriorityQueue<T>
     {

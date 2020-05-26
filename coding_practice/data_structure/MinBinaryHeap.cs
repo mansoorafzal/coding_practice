@@ -1,6 +1,7 @@
-﻿using System;
+﻿using coding_practice.helper;
+using System;
 
-namespace coding_challenges
+namespace coding_practice.data_structure
 {
     public class MinBinaryHeap<T> : BinaryHeap<T>
     {

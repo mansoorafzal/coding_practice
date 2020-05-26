@@ -1,4 +1,7 @@
-﻿namespace coding_challenges
+﻿using coding_practice.data_structure;
+using coding_practice.helper;
+
+namespace coding_practice.problem_solving.specific
 {
     public static class Sudoku
     {

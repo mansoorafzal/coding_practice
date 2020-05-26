@@ -1,4 +1,4 @@
-﻿namespace coding_challenges
+﻿namespace coding_practice
 {
     public class _template
     {

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using coding_practice.helper;
+using coding_practice.problem_solving.generic;
+using System;
 using System.Collections.Generic;
 
-namespace coding_challenges
+namespace coding_practice.data_structure
 {
     public class BinaryTree
     {

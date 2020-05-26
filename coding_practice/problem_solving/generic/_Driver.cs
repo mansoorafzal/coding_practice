@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace coding_challenges
+namespace coding_practice.problem_solving.generic
 {
-    public class Program_Generic
+    public class _Driver
     {
-        public static void Generic_Driver()
+        public static void Problem_Solving_Generic_Driver()
         {
             //AddCubes_Driver();
             //BinarySearch_Driver();
             //FindConsecutive_Driver();
             //FindDuplicate_Driver();
-            MergeNSortedArrays_Driver();
+            //MergeNSortedArrays_Driver();
             //SquareSubmatrix_Driver();
             //ZeroMatrix_Driver();
-
-            Console.Read();
         }
 
         private static void AddCubes_Driver()

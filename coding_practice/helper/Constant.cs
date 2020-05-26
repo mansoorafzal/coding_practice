@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace coding_challenges
+﻿namespace coding_practice.helper
 {
     public static class Constant
     {

@@ -1,4 +1,4 @@
-﻿namespace coding_challenges
+﻿namespace coding_practice.data_structure
 {
     public class Item<T>
     {

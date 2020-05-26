@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using coding_practice.data_structure;
+using System;
 
-namespace coding_challenges
+namespace coding_practice.helper
 {
     public static class Utility<T>
     {

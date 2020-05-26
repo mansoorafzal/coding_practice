@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using coding_practice.helper;
+using System;
 
-namespace coding_challenges
+namespace coding_practice.data_structure
 {
     public class LinkedList<T>
     {

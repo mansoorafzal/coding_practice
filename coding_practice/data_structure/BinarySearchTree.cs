@@ -1,4 +1,7 @@
-﻿namespace coding_challenges
+﻿using coding_practice.helper;
+using coding_practice.problem_solving.generic;
+
+namespace coding_practice.data_structure
 {
     public class BinarySearchTree : BinaryTree
     {

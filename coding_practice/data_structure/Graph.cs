@@ -1,7 +1,8 @@
-﻿using System;
+﻿using coding_practice.helper;
+using System;
 using System.Collections.Generic;
 
-namespace coding_challenges
+namespace coding_practice.data_structure
 {
     public class Graph
     {

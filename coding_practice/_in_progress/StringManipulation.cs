@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace coding_challenges
+namespace coding_practice
 {
     public static class StringManipulation
     {

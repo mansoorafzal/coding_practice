@@ -1,8 +1,9 @@
-﻿using System;
+﻿using coding_practice.data_structure;
+using coding_practice.helper;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace coding_challenges
+namespace coding_practice.problem_solving.generic
 {
     public static class Problems
     {
@@ -74,7 +75,7 @@ namespace coding_challenges
         private static List<int[]> AddCubesDictionary(int n)
         {
             List<int[]> list = new List<int[]>();
-            Dictionary<double, Point<int>> dictionary = new Dictionary<double, coding_challenges.Point<int>>();
+            Dictionary<double, Point<int>> dictionary = new Dictionary<double, Point<int>>();
             int loop = 0;
 
             for (int a = 1; a <= n; a++)
@@ -591,6 +592,20 @@ namespace coding_challenges
 
             return merged;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public static int BinomialCoefficient(int n, int k)
         {

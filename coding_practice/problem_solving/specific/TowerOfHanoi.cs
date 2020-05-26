@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace coding_challenges
+namespace coding_practice.problem_solving.specific
 {
     public class TowerOfHanoi
     {
