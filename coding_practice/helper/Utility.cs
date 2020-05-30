@@ -12,6 +12,11 @@ namespace coding_practice.helper
                 return Compare(Convert.ToInt32(t1), Convert.ToInt32(t2));
             }
 
+            if (typeof(T) == typeof(string))
+            {
+                return Compare(Convert.ToString(t1), Convert.ToString(t2));
+            }
+
             if (typeof(T) == typeof(Vertex))
             {
                 return Compare(((Vertex)(object)t1).Name, ((Vertex)(object)t2).Name);
@@ -20,6 +25,11 @@ namespace coding_practice.helper
             if (typeof(T) == typeof(Edge))
             {
                 return Compare(((Edge)(object)t1).Destination.Name, ((Edge)(object)t2).Destination.Name);
+            }
+
+            if (typeof(T) == typeof(Item<int>))
+            {
+                return Compare(((Item<int>)(object)t1).Value, ((Item<int>)(object)t2).Value);
             }
 
             return 0;
@@ -115,6 +125,18 @@ namespace coding_practice.helper
             }
 
             return t;
+        }
+
+        public static int GetJaggedArrayCount(T[][] matrix)
+        {
+            int count = 0;
+
+            for (int y = 0; y < matrix.GetLength(0); y++)
+            {
+                count += matrix[y].GetLength(0);
+            }
+
+            return count;
         }
     }
 }

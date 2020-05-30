@@ -26,10 +26,10 @@ namespace coding_practice.problem_solving.specific
 
         private static void Combination_Driver()
         {
-            int n = 5;
-            int r = 3;
-            int[] N = { 5, 6, 7, 8, 9 };
-            string[] S = { "V", "W", "X", "Y", "Z" };
+            int n = 4;
+            int r = 0;
+            int[] N = { 6, 7, 8, 9 };
+            string[] S = { "W", "X", "Y", "Z" };
 
             Console.WriteLine(n + "C" + r + ": " + Combination<int>.NCR(n, r));
             Console.WriteLine(n + "C: " + Combination<int>.NCR(n));
@@ -51,19 +51,19 @@ namespace coding_practice.problem_solving.specific
 
         private static void Permutation_Driver()
         {
-            int n = 3;
+            int n = 4;
             int r = 2;
-            int[] N = { 7, 8, 9 };
-            string[] S = { "X", "Y", "Z" };
+            int[] N = { 6, 7, 8, 9 };
+            string[] S = { "W", "X", "Y", "Z" };
 
             Console.WriteLine(n + "P" + r + ": " + Permutation<int>.NPR(n, r));
             Console.WriteLine(n + "P: " + Permutation<int>.NPR(n));
 
-            //Permutation<int>.Generate(n, r);
-            //Permutation<string>.Generate(n, r);
+            Permutation<int>.Generate(n, r);
+            Permutation<string>.Generate(n, r);
 
-            //Permutation<int>.Generate(N, r, true);
-            //Permutation<string>.Generate(S, r);
+            Permutation<int>.Generate(N, r);
+            Permutation<string>.Generate(S, r);
         }
 
         private static void Sudoku_Driver()

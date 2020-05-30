@@ -6,6 +6,7 @@ namespace coding_practice.problem_solving.specific
 {
     public static class Combination<T>
     {
+        // nCr = n! / r! (n - r)! OR nCr = nPr / r! [nPr = n! / (n - r)!]
         public static double NCR(int n, int r = 0)
         {
             if (n == r || r == 0)
@@ -18,7 +19,7 @@ namespace coding_practice.problem_solving.specific
                 return n;
             }
 
-            return Problems.Factorial(n) / (Problems.Factorial(r) * Problems.Factorial(n - r));
+            return Maths.Factorial(n) / (Maths.Factorial(r) * Maths.Factorial(n - r));
         }
 
         public static void Generate(int n, int r)
@@ -57,7 +58,7 @@ namespace coding_practice.problem_solving.specific
             {
                 for (int j = 0; j < list[i].Length; j++)
                 {
-                    Console.Write(list[i][j] + " ");
+                    Console.Write(list[i][j]);
                 }
 
                 Console.Write(" - ");

@@ -290,8 +290,8 @@ namespace coding_practice.data_structure
 
         public int PossibleBinaryTrees(int n)
         {
-            int c = Problems.CatalanNumber(n);
-            return (c * (int)Problems.Factorial(n));
+            int c = Maths.CatalanNumber(n);
+            return (c * (int)Maths.Factorial(n));
         }
     }
 }

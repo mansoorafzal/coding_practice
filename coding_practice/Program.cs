@@ -15,6 +15,8 @@ namespace coding_practice
             // Uncomment the relevant driver code in below method.
             problem_solving.generic._Driver.Problem_Solving_Generic_Driver();
 
+            Console.WriteLine();
+            Console.WriteLine("Press any key to exit...");
             Console.Read();
         }
     }

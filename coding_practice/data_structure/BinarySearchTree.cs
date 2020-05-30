@@ -140,7 +140,7 @@ namespace coding_practice.data_structure
 
         public int PossibleBinarySearchTrees(int n)
         {
-            return Problems.CatalanNumber(n);
+            return Maths.CatalanNumber(n);
         }
 
         // TODO - not working (constructing all possible trees)

@@ -149,6 +149,147 @@ namespace coding_practice.problem_solving.generic
             return false;
         }
 
+        // Given two sorted arrays, copy contents of second array in first one without using any buffer and additional memory.
+        public static int[] CopySortedArrays(int[] a, int[] b)
+        {
+            if (b.Length == 0)
+            {
+                return a;
+            }
+
+            if (a.Length == b.Length)
+            {
+                return b;
+            }
+
+            int ai = a.Length - 1;
+            int bi = b.Length - 1;
+            int p = ai - bi - 1;
+
+            while (ai >= 0)
+            {
+                if (p < 0)
+                {
+                    a[ai--] = b[bi--];
+
+                    continue;
+                }
+
+                if (bi < 0)
+                {
+                    a[ai--] = a[p--];
+
+                    continue;
+                }
+
+                if (a[p] > b[bi])
+                {
+                    a[ai--] = a[p--];
+                }
+                else if (a[p] < b[bi])
+                {
+                    a[ai--] = b[bi--];
+                }
+                else if (a[p] == b[bi])
+                {
+                    a[ai--] = a[p--];
+                    a[ai--] = b[bi--];
+                }
+            }
+
+            return a;
+        }
+
+        // Find total count of N digit numbers whose digits add to sum.
+        public static void DigitSum(int n, int sum)
+        {
+            int call = 0;
+            List<string> list = new List<string>();
+            int?[][] table = new int?[n + 1][];
+
+            for (int i = 0; i < table.Length; i++)
+            {
+                table[i] = new int?[sum];
+            }
+
+            DateTime dt1 = DateTime.Now;
+            int r = DigitSumRecursive(n, sum, n, string.Empty, list, ref call);
+            Console.WriteLine("Recursive: Count = " + r + ", calls " + call + " times and took " + (DateTime.Now - dt1).TotalMilliseconds + " ms");
+            Utility<string>.DisplaArray(list.ToArray());
+
+            call = 0;
+
+            DateTime dt2 = DateTime.Now;
+            int rc = DigitSumRecursiveCache(n, sum, n, table, ref call);
+            Console.WriteLine("Recursive Cache: Count = " + rc + ", calls " + call + " times and took " + (DateTime.Now - dt2).TotalMilliseconds + " ms");
+        }
+        private static int DigitSumRecursive(int n, int sum, int N, string s, List<string> list, ref int call)
+        {
+            call++;
+
+            if (n == 0 && sum == 0)
+            {
+                list.Add(s);
+
+                return 1;
+            }
+
+            if (n == 0 && (sum < 0 || sum > 0))
+            {
+                return 0;
+            }
+
+            int count = 0;
+
+            for (int i = 0; i <= 9; i++)
+            {
+                if (n == N && i == 0)
+                {
+                    continue;
+                }
+
+                count += DigitSumRecursive(n - 1, sum - i, N, s + i.ToString(), list, ref call);
+            }
+
+            return count;
+        }
+        private static int DigitSumRecursiveCache(int n, int sum, int N, int?[][] table, ref int call)
+        {
+            call++;
+
+            if (n == 0 && sum == 0)
+            {
+                return 1;
+            }
+
+            if (n == 0 && (sum < 0 || sum > 0))
+            {
+                return 0;
+            }
+
+            int count = 0;
+
+            for (int i = 0; i <= 9; i++)
+            {
+                if (n == N && i == 0)
+                {
+                    continue;
+                }
+
+                if (n - 1 >= 0 && sum - i >= 0)
+                {
+                    if (!table[n - 1][sum - i].HasValue)
+                    {
+                        table[n - 1][sum - i] = DigitSumRecursiveCache(n - 1, sum - i, N, table, ref call);
+                    }
+
+                    count += table[n - 1][sum - i].Value;
+                }
+            }
+
+            return count;
+        }
+
         // Find longest sequence of consecutive numbers in unsorted array.
         public static int FindConsecutive(int[] n)
         {
@@ -217,6 +358,585 @@ namespace coding_practice.problem_solving.generic
             duplicate.CopyTo(array);
 
             return array;
+        }
+
+        // Find all N digit numbers.
+        public static void FindNDigitNumbers(int n, int sum, string number, List<string> list)
+        {
+            if (n > 0 && sum >= 0)
+            {
+                int i = 0;
+
+                if (number.Equals(string.Empty))
+                {
+                    i = 1;
+                }
+
+                while (i <= 9)
+                {
+                    FindNDigitNumbers(n - 1, sum - i, number + i.ToString(), list);
+
+                    i++;
+                }
+            }
+            else if (n == 0 && sum == 0)
+            {
+                list.Add(number);
+            }
+        }
+
+        // Generate all subsequences from a string.
+        public static List<string> GenerateSubsequences(string a)
+        {
+            List<string> list = new List<string>();
+
+            if (a.Length == 0)
+            {
+                return list;
+            }
+
+            if (a.Length == 1)
+            {
+                list.Add(a);
+
+                return list;
+            }
+
+            GenerateSubsequences(a, list, string.Empty);
+
+            return list;
+        }
+        private static void GenerateSubsequences(string a, List<string> list, string s)
+        {
+            if (a.Length == 0)
+            {
+                list.Add(s);
+                return;
+            }
+
+            GenerateSubsequences(a.Substring(1), list, s + a.Substring(0, 1));
+            GenerateSubsequences(a.Substring(1), list, s);
+        }
+
+        // To find if two strings are anagram of each other.
+        public static bool IsAnagram(string a, string b)
+        {
+            if (a.Length != b.Length)
+            {
+                return false;
+            }
+
+            int start = 0;
+            int end = b.Length - 1;
+
+            string s1 = a.ToLower();
+            string s2 = b.ToLower();
+
+            int[] counter = new int[256];
+
+            while (start <= end)
+            {
+                counter[s1[start]]++;
+                counter[s2[start]]--;
+                start++;
+            }
+
+            for (int i = 0; i < counter.Length; i++)
+            {
+                if (counter[i] != 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // To find if two strings are correctly interleaved as available in third string.
+        public static bool IsInterleaved(string A, string B, string C)
+        {
+            /*
+             *   | 0 1 2 3 .... A
+             * --------------------
+             * 0 |
+             * 1 |
+             * 2 |
+             * 3 |
+             * . |
+             * . |
+             * . |
+             * . |
+             * B |
+            */
+
+            if (A.Length + B.Length != C.Length)
+            {
+                return false;
+            }
+
+            if (A.Length == 0)
+            {
+                return B.Equals(C);
+            }
+
+            if (B.Length == 0)
+            {
+                return A.Equals(C);
+            }
+
+            bool[][] table = new bool[A.Length + 1][];
+
+            for (int y = 0; y < table.Length; y++)
+            {
+                table[y] = new bool[B.Length + 1];
+
+                for (int x = 0; x < table[y].Length; x++)
+                {
+                    if (y == 0 && x == 0) // a = empty, b = empty
+                    {
+                        table[y][x] = true;
+                    }
+                    else if (y == 0) // a = empty
+                    {
+                        if (B[x - 1] == C[x - 1])
+                        {
+                            table[y][x] = table[y][x - 1];
+                        }
+                    }
+                    else if (x == 0) // b = empty
+                    {
+                        if (A[y - 1] == C[y - 1])
+                        {
+                            table[y][x] = table[y - 1][x];
+                        }
+                    }
+                    else if (A[y - 1] == C[y + x - 1] && B[x - 1] != C[y + x - 1]) // a = match
+                    {
+                        table[y][x] = table[y - 1][x];
+                    }
+                    else if (A[y - 1] != C[y + x - 1] && B[x - 1] == C[y + x - 1]) // b = match
+                    {
+                        table[y][x] = table[y][x - 1];
+                    }
+                    else if (A[y - 1] == C[y + x - 1] && B[x - 1] == C[y + x - 1]) // a = match, b = match
+                    {
+                        table[y][x] = table[y - 1][x] || table[y][x - 1];
+                    }
+                }
+            }
+
+            //Utility<bool>.DisplayMatrix(table);
+
+            return table[A.Length][B.Length];
+        }
+
+        // To find if a string is palindrome.
+        public static bool IsOneStringPalindrome(string a)
+        {
+            return IsOneStringPalindrome(a, 0, a.Length - 1);
+        }
+        private static bool IsOneStringPalindrome(string a, int begin, int end)
+        {
+            if (a[begin] != a[end])
+            {
+                return false;
+            }
+
+            while (begin <= end)
+            {
+                return IsOneStringPalindrome(a, begin + 1, end - 1);
+            }
+
+            return true;
+        }
+
+        // To find if two strings are palindrome of each other.
+        public static bool IsTwoStringsPalindrome(string a, string b)
+        {
+            int start = 0;
+            int end = b.Length - 1;
+
+            string s1 = a.ToLower();
+            string s2 = b.ToLower();
+
+            while (start <= end)
+            {
+                if (s1[start] == s2[end])
+                {
+                    start++;
+                    end--;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Calculate the greatest product in an N x N matrix by moving from top left to bottom and right.
+        public static int MatrixProduct(int[][] matrix)
+        {
+            if (matrix == null || matrix.Length == 0)
+            {
+                return 0;
+            }
+
+            if (matrix.Length == 1)
+            {
+                return matrix[0][0];
+            }
+
+            int[][] min = new int[matrix.GetLength(0)][];
+
+            for (int i = 0; i < min.GetLength(0); i++)
+            {
+                min[i] = new int[matrix[i].GetLength(0)];
+            }
+
+            int[][] max = new int[matrix.GetLength(0)][];
+
+            for (int i = 0; i < max.GetLength(0); i++)
+            {
+                max[i] = new int[matrix[i].GetLength(0)];
+            }
+
+            for (int y = 0; y < matrix.GetLength(0); y++)
+            {
+                for (int x = 0; x < matrix[y].GetLength(0); x++)
+                {
+                    int mini = 0;
+                    int maxi = 0;
+
+                    if (y == 0 && x == 0)
+                    {
+                        mini = matrix[y][x];
+                        maxi = matrix[y][x];
+                    }
+                    else if (y == 0 && x > 0)
+                    {
+                        mini = matrix[y][x] * min[y][x - 1];
+                        maxi = matrix[y][x] * max[y][x - 1];
+                    }
+                    else if (y > 0 && x == 0)
+                    {
+                        mini = matrix[y][x] * min[y - 1][x];
+                        maxi = matrix[y][x] * max[y - 1][x];
+                    }
+                    else
+                    {
+                        if (matrix[y][x] * min[y - 1][x] < matrix[y][x] * max[y - 1][x])
+                        {
+                            mini = matrix[y][x] * min[y - 1][x];
+                            maxi = matrix[y][x] * max[y - 1][x];
+                        }
+                        else
+                        {
+                            mini = matrix[y][x] * max[y - 1][x];
+                            maxi = matrix[y][x] * min[y - 1][x];
+                        }
+
+                        if (matrix[y][x] * min[y][x - 1] < matrix[y][x] * max[y][x - 1])
+                        {
+                            if (matrix[y][x] * min[y][x - 1] < mini)
+                            {
+                                mini = matrix[y][x] * min[y][x - 1];
+                            }
+
+                            if (matrix[y][x] * max[y][x - 1] > maxi)
+                            {
+                                maxi = matrix[y][x] * max[y][x - 1];
+                            }
+                        }
+                        else
+                        {
+                            if (matrix[y][x] * max[y][x - 1] < mini)
+                            {
+                                mini = matrix[y][x] * max[y][x - 1];
+                            }
+
+                            if (matrix[y][x] * min[y][x - 1] > maxi)
+                            {
+                                maxi = matrix[y][x] * min[y][x - 1];
+                            }
+                        }
+                    }
+
+                    min[y][x] = Math.Min(mini, maxi);
+                    max[y][x] = Math.Max(mini, maxi);
+                }
+            }
+
+            return max[max.GetLength(0) - 1][max[0].GetLength(0) - 1];
+        }
+
+        // Search an item in N x M matrix where all rows and columns are sorted.
+        public static bool MatrixSearch(int[][] matrix, int x)
+        {
+            int length = Utility<int>.GetJaggedArrayCount(matrix);
+
+            if (length == 1)
+            {
+                if (x == matrix[0][0])
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (matrix.GetLength(0) == 1)
+            {
+                return BinarySearch(matrix[0], x);
+            }
+
+            int index = MatrixSearch(matrix, x, 0, matrix.GetLength(0) - 1);
+
+            if (index == -1)
+            {
+                return false;
+            }
+
+            return BinarySearch(matrix[index], x);
+        }
+        private static int MatrixSearch(int[][] matrix, int x, int begin, int end)
+        {
+            if (begin > end)
+            {
+                return -1;
+            }
+
+            int middle = ((end - begin) / 2) + begin;
+
+            if (x >= matrix[middle][0] && x <= matrix[middle][matrix[middle].GetLength(0) - 1])
+            {
+                return middle;
+            }
+
+            if (x < matrix[middle][0])
+            {
+                return MatrixSearch(matrix, x, begin, middle - 1);
+            }
+
+            if (x > matrix[middle][matrix[middle].GetLength(0) - 1])
+            {
+                return MatrixSearch(matrix, x, middle + 1, end);
+            }
+
+            return -1;
+        }
+
+        // Given N sorted arrays, merge them in to single sorted array.
+        public static void MergeNSortedArrays(int[][] matrix)
+        {
+            int length = Utility<int>.GetJaggedArrayCount(matrix);
+
+            DateTime dt1 = DateTime.Now;
+            int[] bst = MergeNSortedArraysBinarySearchTree(matrix);
+            DateTime dt2 = DateTime.Now;
+            int[] dp = MergeNSortedArraysDynamicProgramming(matrix, length);
+            DateTime dt3 = DateTime.Now;
+            int[] pq = MergeNSortedArraysPriorityQueue(matrix, length);
+            DateTime dt4 = DateTime.Now;
+
+            Console.WriteLine("Binary Search Tree took " + (dt2 - dt1).TotalMilliseconds + " ms");
+            Utility<int>.DisplaArray(bst);
+
+            Console.WriteLine("Dynamic Programming took " + (dt3 - dt2).TotalMilliseconds + " ms");
+            Utility<int>.DisplaArray(dp);
+
+            Console.WriteLine("Priority Queue took " + (dt4 - dt3).TotalMilliseconds + " ms");
+            Utility<int>.DisplaArray(pq);
+        }
+        private static int[] MergeNSortedArraysBinarySearchTree(int[][] matrix)
+        {
+            BinarySearchTree binarySearchTree = new BinarySearchTree(Constant.Duplicate.Handle);
+
+            for (int y = 0; y < matrix.GetLength(0); y++)
+            {
+                for (int x = 0; x < matrix[y].GetLength(0); x++)
+                {
+                    binarySearchTree.Insert(matrix[y][x]);
+                }
+            }
+
+            return binarySearchTree.GenerateTraversal(Constant.TraversalType.InOrder);
+        }
+        private static int[] MergeNSortedArraysDynamicProgramming(int[][] matrix, int length)
+        {
+            if (length == 1)
+            {
+                return new int[] { matrix[0][0] };
+            }
+
+            int[] merged = new int[matrix[0].Length];
+
+            for (int i = 0; i < matrix[0].Length; i++)
+            {
+                merged[i] = matrix[0][i];
+            }
+
+            for (int y = 1; y < matrix.GetLength(0); y++)
+            {
+                merged = MergeNSortedArraysDynamicProgramming(merged, matrix[y]);
+            }
+
+            return merged;
+        }
+        private static int[] MergeNSortedArraysDynamicProgramming(int[] a, int[] b)
+        {
+            if (a.Length == 0)
+            {
+                return b;
+            }
+
+            if (b.Length == 0)
+            {
+                return a;
+            }
+
+            int[] merged = new int[a.Length + b.Length];
+            int index = 0;
+            int ai = 0;
+            int bi = 0;
+
+            while (index < merged.Length)
+            {
+                if (ai >= a.Length && bi >= b.Length)
+                {
+                    break;
+                }
+
+                if (ai >= a.Length && bi < b.Length)
+                {
+                    merged[index] = b[bi];
+                    bi++;
+                    index++;
+
+                    continue;
+                }
+
+                if (ai < a.Length && bi >= b.Length)
+                {
+                    merged[index] = a[ai];
+                    ai++;
+                    index++;
+
+                    continue;
+                }
+
+                if (a[ai] < b[bi])
+                {
+                    merged[index] = a[ai];
+                    ai++;
+                    index++;
+                }
+                else if (a[ai] > b[bi])
+                {
+                    merged[index] = b[bi];
+                    bi++;
+                    index++;
+                }
+                else if (a[ai] == b[bi])
+                {
+                    merged[index] = a[ai];
+                    ai++;
+                    index++;
+
+                    merged[index] = b[bi];
+                    bi++;
+                    index++;
+                }
+            }
+
+            return merged;
+        }
+        private static int[] MergeNSortedArraysPriorityQueue(int[][] matrix, int length)
+        {
+            if (length == 1)
+            {
+                return new int[] { matrix[0][0] };
+            }
+
+            PriorityQueue<Item<int>> priorityQueue = new PriorityQueue<Item<int>>(length, Constant.Priority.Minimum);
+
+            for (int y = 0; y < matrix.GetLength(0); y++)
+            {
+                priorityQueue.Enqueue(new Item<int>(y, 0, matrix[y][0]));
+            }
+
+            int[] merged = new int[length];
+            int index = 0;
+
+            while (priorityQueue.Count > 0)
+            {
+                Item<int> item = priorityQueue.Dequeue();
+                merged[index++] = item.Value;
+
+                if (item.Index < matrix[item.Serial].GetLength(0) - 1)
+                {
+                    priorityQueue.Enqueue(new Item<int>(item.Serial, item.Index + 1, matrix[item.Serial][item.Index + 1]));
+                }
+            }
+
+            return merged;
+        }
+
+        // Reverse the words in a sentence where words are separated by white space.
+        public static string ReverseWords(string a)
+        {
+            if (a.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            if (!char.IsWhiteSpace(a[0]))
+            {
+                a = " " + a; // In reverse sentence, this will be the last space. It is required to convert last word properly.
+            }
+
+            char[] c = a.ToCharArray();
+            int i = 0;
+            int j = c.Length - 1;
+
+            while (i < j)
+            {
+                char temp = c[i];
+                c[i] = c[j];
+                c[j] = temp;
+
+                i++;
+                j--;
+            }
+
+            int k = 0;
+            int begin = 0;
+            int end = 0;
+
+            while (k < c.Length)
+            {
+                if (char.IsWhiteSpace(c[k]) || k == c.Length - 1)
+                {
+                    end = k - 1;
+
+                    while (begin < end)
+                    {
+                        char temp = c[begin];
+                        c[begin] = c[end];
+                        c[end] = temp;
+
+                        begin++;
+                        end--;
+                    }
+
+                    begin = k + 1;
+                }
+
+                k++;
+            }
+
+            return new string(c);
         }
 
         // Find largest square submatrix of 1s in a matrix which consists of 0s and 1s.
@@ -473,823 +1193,145 @@ namespace coding_practice.problem_solving.generic
             Utility<bool>.DisplayMatrix(matrix, 6, false);
         }
 
-
-        // Given N sorted arrays, merge them in to single sorted array.
-        public static void MergeNSortedArrays(int[][] matrix)
+        // Find shortest subarray thats sum to zero.
+        public static void ZeroSum(int[] n)
         {
             DateTime dt1 = DateTime.Now;
-            int[] bst = MergeNSortedArraysBinarySearchTree(matrix);
+            int[] bf = ZeroSumBruteForce(n);
             DateTime dt2 = DateTime.Now;
-            int[] dp = MergeNSortedArraysDynamicProgramming(matrix);
+            int[] dp = ZeroSumDynamicProgramming(n);
             DateTime dt3 = DateTime.Now;
+            int[] o = ZeroSumLinear(n);
+            DateTime dt4 = DateTime.Now;
 
-            Console.WriteLine("Binary Search Tree took " + (dt2 - dt1).TotalMilliseconds + " ms");
-            Utility<int>.DisplaArray(bst);
+            Console.WriteLine("Brute Force took " + (dt2 - dt1).TotalMilliseconds + " ms");
+            Utility<int>.DisplaArray(bf);
 
             Console.WriteLine("Dynamic Programming took " + (dt3 - dt2).TotalMilliseconds + " ms");
-            Utility<int>.DisplaArray(MergeNSortedArraysDynamicProgramming(matrix));
+            Utility<int>.DisplaArray(dp);
+
+            Console.WriteLine("Linear took " + (dt4 - dt3).TotalMilliseconds + " ms");
+            Utility<int>.DisplaArray(o);
         }
-        private static int[] MergeNSortedArraysBinarySearchTree(int[][] matrix)
-        {
-            BinarySearchTree binarySearchTree = new BinarySearchTree(Constant.Duplicate.Handle);
-
-            for (int y = 0; y < matrix.GetLength(0); y++)
-            {
-                for (int x = 0; x < matrix[y].GetLength(0); x++)
-                {
-                    binarySearchTree.Insert(matrix[y][x]);
-                }
-            }
-
-            return binarySearchTree.GenerateTraversal(Constant.TraversalType.InOrder);
-        }
-        private static int[] MergeNSortedArraysDynamicProgramming(int[][] matrix)
-        {
-            if (matrix.Length == 1)
-            {
-                return new int[] { matrix[0][0] };
-            }
-
-            int[] merged = new int[matrix[0].Length];
-
-            for (int i = 0; i < matrix[0].Length; i++)
-            {
-                merged[i] = matrix[0][i];
-            }
-
-            for (int y = 1; y < matrix.GetLength(0); y++)
-            {
-                merged = MergeNSortedArraysDynamicProgramming(merged, matrix[y]);
-            }
-
-            return merged;
-        }
-        private static int[] MergeNSortedArraysDynamicProgramming(int[] a, int[] b)
-        {
-            if (a.Length == 0)
-            {
-                return b;
-            }
-
-            if (b.Length == 0)
-            {
-                return a;
-            }
-
-            int[] merged = new int[a.Length + b.Length];
-            int index = 0;
-            int ai = 0;
-            int bi = 0;
-
-            while (index < merged.Length)
-            {
-                if (ai >= a.Length && bi >= b.Length)
-                {
-                    break;
-                }
-
-                if (ai >= a.Length && bi < b.Length)
-                {
-                    merged[index] = b[bi];
-                    bi++;
-                    index++;
-
-                    continue;
-                }
-
-                if (ai < a.Length && bi >= b.Length)
-                {
-                    merged[index] = a[ai];
-                    ai++;
-                    index++;
-
-                    continue;
-                }
-
-                if (a[ai] < b[bi])
-                {
-                    merged[index] = a[ai];
-                    ai++;
-                    index++;
-                }
-                else if (a[ai] > b[bi])
-                {
-                    merged[index] = b[bi];
-                    bi++;
-                    index++;
-                }
-                else if (a[ai] == b[bi])
-                {
-                    merged[index] = a[ai];
-                    ai++;
-                    index++;
-
-                    merged[index] = b[bi];
-                    bi++;
-                    index++;
-                }
-            }
-
-            return merged;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public static int BinomialCoefficient(int n, int k)
-        {
-            int bc = 1;
-
-            if (k > n - k)
-            {
-                k = n - k;
-            }
-
-            for (int i = 0; i < k; ++i)
-            {
-                bc *= (n - i);
-                bc /= (i + 1);
-            }
-
-            return bc;
-        }
-
-        public static int CatalanNumber(int n, bool binomialCoefficient = false)
-        {
-            if (binomialCoefficient)
-            {
-                return (BinomialCoefficient(2 * n, n) / (n + 1));
-            }
-            else
-            {
-                int?[] array = new int?[n];
-                return CatalanNumber(n, array);
-            }
-        }
-
-        private static int CatalanNumber(int n, int?[] array)
-        {
-            if (n <= 1)
-            {
-                return 1;
-            }
-
-            int sum = 0;
-
-            for (int i = 0; i < n; i++)
-            {
-                if (!array[i].HasValue)
-                {
-                    array[i] = CatalanNumber(i, array);
-                }
-
-                if (!array[n - i - 1].HasValue)
-                {
-                    array[n - i - 1] = CatalanNumber(n - i - 1, array);
-                }
-
-                sum += array[i].Value * array[n - i - 1].Value;
-            }
-
-            return sum;
-        }
-
-        public static void DigitSum(int n, int sum)
+        private static int[] ZeroSumBruteForce(int[] n)
         {
             List<int> list = new List<int>();
-            int?[][] table = new int?[n + 1][];
+            int[] sub = null;
+            int count = n.Length + 1;
 
-            for (int i = 0; i < table.Length; i++)
+            if (n.Length == 0)
             {
-                table[i] = new int?[sum + 1];
+                return list.ToArray();
             }
 
-            Console.WriteLine(DigitSumRecursive(n, sum, n, list) + " " + list.Count);
-            list.Clear();
-            Console.WriteLine(DigitSumRecursiveCache(n, sum, n, table, list) + " " + list.Count);
-        }
-
-        private static int DigitSumRecursive(int n, int sum, int N, List<int> list)
-        {
-            list.Add(1); // to count the recursive calls
-
-            if (n == 0 && sum == 0)
+            if (n.Length == 1 && n[0] == 0)
             {
-                return 1;
+                list.Add(0);
+                return list.ToArray();
             }
 
-            if (n == 0 && (sum < 0 || sum > 0))
-            {
-                return 0;
-            }
+            for (int i = 0; i < n.Length - 1; i++)
+            {   
+                int sum = n[i];
 
-            int count = 0;
+                list.Clear();
+                list.Add(n[i]);
 
-            for (int i = 0; i <= 9; i++)
-            {
-                if (n == N && i == 0)
+                for (int j = i + 1; j < n.Length; j++)
                 {
-                    continue;
-                }
+                    sum += n[j];
+                    list.Add(n[j]);
 
-                count += DigitSumRecursive(n - 1, sum - i, N, list);
-            }
-
-            return count;
-        }
-
-        private static int DigitSumRecursiveCache(int n, int sum, int N, int?[][] table, List<int> list)
-        {
-            list.Add(1); // to count the recursive calls
-
-            if (n == 0 && sum == 0)
-            {
-                return 1;
-            }
-
-            if (n == 0 && (sum < 0 || sum > 0))
-            {
-                return 0;
-            }
-
-            int count = 0;
-
-            for (int i = 0; i <= 9; i++)
-            {
-                if (n == N && i == 0)
-                {
-                    continue;
-                }
-
-                if (n - 1 >= 0 && sum - i >= 0)
-                {
-                    if (!table[n - 1][sum - i].HasValue)
-                    {
-                        table[n - 1][sum - i] = DigitSumRecursiveCache(n - 1, sum - i, N, table, list);
-                    }
-
-                    count += table[n - 1][sum - i].Value;
-                }
-            }
-
-            return count;
-        }
-
-        public static double Factorial(int n)
-        {
-            if (n == 0 || n == 1)
-            {
-                return 1;
-            }
-            else
-            {
-                return n * Factorial(n - 1);
-            }
-        }
-
-        public static int Fibonacci(int n)
-        {
-            if (n == 0 || n == 1)
-            {
-                return n;
-            }
-            else
-            {
-                return Fibonacci(n - 1) + Fibonacci(n - 2);
-            }
-        }
-
-        
-
-        public static void FindNDigitNumbers(int n, int sum, string number)
-        {
-            if (n > 0 && sum >= 0)
-            {
-                int i = 0;
-
-                if (number.Equals(string.Empty))
-                {
-                    i = 1;
-                }
-
-                while (i <= 9)
-                {
-                    FindNDigitNumbers(n - 1, sum - i, number + i.ToString());
-
-                    i++;
-                }
-            }
-            else if (n == 0 && sum == 0)
-            {
-                Console.Write(number + " ");
-            }
-        }
-
-        
-
-        // TODO - not working
-        // Find minimum swaps to arrange R together in a string of R and W.
-        public static int FindMinimumSwaps(string a)
-        {
-            if (a.Length == 0 || !a.Contains("R"))
-            {
-                return 0;
-            }
-
-            char[] c = a.ToCharArray();
-
-            int swaps = 0;
-
-            for (int i = 0; i < c.Length; i++)
-            {
-                swaps += Math.Min(FindMinimumSwaps(c, i + 1, 'f'), FindMinimumSwaps(c, i + 1, 'b'));
-            }
-
-            return swaps;
-        }
-
-        private static int FindMinimumSwaps(char[] c, int end, char direction)
-        {
-            int count = 0;
-
-            if (direction == 'f')
-            {
-                for (int i = 1; i < end; i++)
-                {
-                    if (c[i] != c[i - 1] && c[i] == 'W')
-                    {
-                        Utility<char>.Swap(ref c[i], ref c[i - 1]);
-                        count++;
-                    }
-                }
-            }
-            else if (direction == 'b')
-            {
-                for (int i = end; i > 0; i--)
-                {
-                    if (c[i] != c[i - 1] && c[i] == 'R')
-                    {
-                        Utility<char>.Swap(ref c[i], ref c[i - 1]);
-                        count++;
+                    if (sum == 0 && list.Count < count)
+                    {   
+                        count = list.Count;
+                        sub = list.ToArray();
                     }
                 }
             }
 
-            return count;
+            return sub;
         }
-
-        public static bool IsAnagram(string a, string b)
+        private static int[] ZeroSumDynamicProgramming(int[] n)
         {
-            if (a.Length != b.Length)
+            List<int> list = new List<int>();
+
+            if (n.Length == 0)
             {
-                return false;
+                return list.ToArray();
             }
 
-            int start = 0;
-            int end = b.Length - 1;
-
-            string s1 = a.ToLower();
-            string s2 = b.ToLower();
-
-            int[] counter = new int[256];
-
-            while (start <= end)
+            if (n.Length == 1 && n[0] == 0)
             {
-                counter[s1[start]]++;
-                counter[s2[start]]--;
-                start++;
+                list.Add(0);
+                return list.ToArray();
             }
 
-            for (int i = 0; i < counter.Length; i++)
-            {
-                if (counter[i] != 0)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public static bool IsInterleaved(string A, string B, string C)
-        {
-            /*
-             *   | 0 1 2 3 .... A
-             * --------------------
-             * 0 |
-             * 1 |
-             * 2 |
-             * 3 |
-             * . |
-             * . |
-             * . |
-             * . |
-             * B |
-            */
-
-            if (A.Length + B.Length != C.Length)
-            {
-                return false;
-            }
-
-            if (A.Length == 0)
-            {
-                return B.Equals(C);
-            }
-
-            if (B.Length == 0)
-            {
-                return A.Equals(C);
-            }
-
-            bool[][] table = new bool[A.Length + 1][];
-
-            for (int y = 0; y < table.Length; y++)
-            {
-                table[y] = new bool[B.Length + 1];
-
-                for (int x = 0; x < table[y].Length; x++)
-                {
-                    if (y == 0 && x == 0) // a = empty, b = empty
-                    {
-                        table[y][x] = true;
-                    }
-                    else if (y == 0) // a = empty
-                    {
-                        if (B[x - 1] == C[x - 1])
-                        {
-                            table[y][x] = table[y][x - 1];
-                        }
-                    }
-                    else if (x == 0) // b = empty
-                    {
-                        if (A[y - 1] == C[y - 1])
-                        {
-                            table[y][x] = table[y - 1][x];
-                        }
-                    }
-                    else if (A[y - 1] == C[y + x - 1] && B[x - 1] != C[y + x - 1]) // a = match
-                    {
-                        table[y][x] = table[y - 1][x];
-                    }
-                    else if (A[y - 1] != C[y + x - 1] && B[x - 1] == C[y + x - 1]) // b = match
-                    {
-                        table[y][x] = table[y][x - 1];
-                    }
-                    else if (A[y - 1] == C[y + x - 1] && B[x - 1] == C[y + x - 1]) // a = match, b = match
-                    {
-                        table[y][x] = table[y - 1][x] || table[y][x - 1];
-                    }
-                }
-            }
-
-            Utility<bool>.DisplayMatrix(table);
-
-            return table[A.Length][B.Length];
-        }
-
-        public static bool IsPalindrome(string a, string b)
-        {
-            int start = 0;
-            int end = b.Length - 1;
-
-            string s1 = a.ToLower();
-            string s2 = b.ToLower();
-
-            while (start <= end)
-            {
-                if (s1[start] == s2[end])
-                {
-                    start++;
-                    end--;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public static bool IsPalindrome(string a)
-        {
-            return IsPalindrome(a, 0, a.Length - 1);
-        }
-
-        private static bool IsPalindrome(string a, int begin, int end)
-        {
-            if (a[begin] != a[end])
-            {
-                return false;
-            }
-
-            while (begin <= end)
-            {
-                return IsPalindrome(a, begin + 1, end - 1);
-            }
-
-            return true;
-        }
-
-        public static int MatrixProduct(int[][] matrix)
-        {
-            if (matrix == null || matrix.Length == 0)
-            {
-                return 0;
-            }
-
-            if (matrix.Length == 1)
-            {
-                return matrix[0][0];
-            }
-
-            int[][] min = new int[matrix.GetLength(0)][];
-
-            for (int i = 0; i < min.GetLength(0); i++)
-            {
-                min[i] = new int[matrix[i].GetLength(0)];
-            }
-
-            int[][] max = new int[matrix.GetLength(0)][];
-
-            for (int i = 0; i < max.GetLength(0); i++)
-            {
-                max[i] = new int[matrix[i].GetLength(0)];
-            }
+            int?[][] matrix = new int?[n.Length][];
 
             for (int y = 0; y < matrix.GetLength(0); y++)
             {
-                for (int x = 0; x < matrix[y].GetLength(0); x++)
+                matrix[y] = new int?[n.Length];
+            }
+
+            int? col = null;
+            int? row = null;
+
+            for (int y = 0; y < n.Length; y++)
+            {
+                matrix[y][y] = n[y];
+
+                for (int x = y + 1; x < n.Length; x++)
                 {
-                    int mini = 0;
-                    int maxi = 0;
+                    matrix[y][x] = matrix[y][x - 1] + n[x];
 
-                    if (y == 0 && x == 0)
+                    if (matrix[y][x] == 0 && ((!col.HasValue && !row.HasValue) || (x - y < row - col)))
                     {
-                        mini = matrix[y][x];
-                        maxi = matrix[y][x];
+                        col = y;
+                        row = x;
                     }
-                    else if (y == 0 && x > 0)
-                    {
-                        mini = matrix[y][x] * min[y][x - 1];
-                        maxi = matrix[y][x] * max[y][x - 1];
-                    }
-                    else if (y > 0 && x == 0)
-                    {
-                        mini = matrix[y][x] * min[y - 1][x];
-                        maxi = matrix[y][x] * max[y - 1][x];
-                    }
-                    else
-                    {
-                        if (matrix[y][x] * min[y - 1][x] < matrix[y][x] * max[y - 1][x])
-                        {
-                            mini = matrix[y][x] * min[y - 1][x];
-                            maxi = matrix[y][x] * max[y - 1][x];
-                        }
-                        else
-                        {
-                            mini = matrix[y][x] * max[y - 1][x];
-                            maxi = matrix[y][x] * min[y - 1][x];
-                        }
-
-                        if (matrix[y][x] * min[y][x - 1] < matrix[y][x] * max[y][x - 1])
-                        {
-                            if (matrix[y][x] * min[y][x - 1] < mini)
-                            {
-                                mini = matrix[y][x] * min[y][x - 1];
-                            }
-
-                            if (matrix[y][x] * max[y][x - 1] > maxi)
-                            {
-                                maxi = matrix[y][x] * max[y][x - 1];
-                            }
-                        }
-                        else
-                        {
-                            if (matrix[y][x] * max[y][x - 1] < mini)
-                            {
-                                mini = matrix[y][x] * max[y][x - 1];
-                            }
-
-                            if (matrix[y][x] * min[y][x - 1] > maxi)
-                            {
-                                maxi = matrix[y][x] * min[y][x - 1];
-                            }
-                        }
-                    }
-
-                    min[y][x] = Math.Min(mini, maxi);
-                    max[y][x] = Math.Max(mini, maxi);
                 }
             }
 
-            return max[max.GetLength(0) - 1][max[0].GetLength(0) - 1];
+            if (col.HasValue && row.HasValue)
+            {
+                for (int i = col.Value; i <= row; i++)
+                {
+                    list.Add(n[i]);
+                }
+            }
+
+            return list.ToArray();
         }
-
-        public static float Median(int[] a, int[] b)
+        private static int[] ZeroSumLinear(int[] n)
         {
-            float f = 0;
+            Dictionary<int, int?> dictionary = new Dictionary<int, int?>();
+            int sum = 0;
+            int? j = null;
 
-            if (a.Length == 0 && b.Length == 0)
+            for (int i = 0; i <= n.Length; i++)
             {
-                return f;
-            }
+                dictionary.TryGetValue(sum, out j);
 
-            int index1 = (a.Length + b.Length) / 2;
-            int? index2 = null;
-
-            if ((a.Length + b.Length) % 2 == 0)
-            {
-                index2 = index1 - 1;
-            }
-
-            if (a.Length == 0 && b.Length > 0)
-            {
-                return Median(b, index1, index2);
-            }
-
-            if (a.Length > 0 && b.Length == 0)
-            {
-                return Median(a, index1, index2);
-            }
-
-            int i = 0;
-            int j = 0;
-            int k = 0;
-            int[] c = new int[index1 + 1];
-
-            while (i <= index1)
-            {
-                if (j > a.Length - 1 || k > b.Length - 1)
+                if (j == null && i == n.Length)
                 {
-                    if (j > a.Length - 1)
-                    {
-                        c[i++] = b[k++];
-                    }
-                    else if (k > b.Length - 1)
-                    {
-                        c[i++] = a[j++];
-                    }
+                    return new int[0];
                 }
-                else if (a[j] < b[k])
+                else if (j == null)
                 {
-                    c[i++] = a[j++];
-                }
-                else if (b[k] < a[j])
-                {
-                    c[i++] = b[k++];
+                    dictionary.Add(sum, i);
+                    sum += n[i];
                 }
                 else
                 {
-                    c[i++] = a[j++];
-                    c[i++] = b[k++];
+                    int[] sub = new int[i - j.Value];
+                    Array.Copy(n, j.Value, sub, 0, i - j.Value);
+
+                    return sub;
                 }
             }
 
-            return Median(c, index1, index2);
+            return new int[0];
         }
-
-        private static float Median(int[] n, int index1, int? index2)
-        {
-            if (index2.HasValue)
-            {
-                return (float)(n[index1] + n[index2.Value]) / 2;
-            }
-            else
-            {
-                return n[index1];
-            }
-        }
-
-        public static string ReverseWords(string a)
-        {
-            if (a.Length == 0)
-            {
-                return string.Empty;
-            }
-
-            char[] c = a.ToCharArray();
-            int i = 0;
-            int j = c.Length - 1;
-
-            while (i < j)
-            {
-                char temp = c[i];
-                c[i] = c[j];
-                c[j] = temp;
-
-                i++;
-                j--;
-            }
-
-            int k = 0;
-            int begin = 0;
-            int end = 0;
-
-            while (k < c.Length)
-            {
-                if (char.IsWhiteSpace(c[k]) || k == c.Length - 1)
-                {
-                    end = k - 1;
-
-                    while (begin < end)
-                    {
-                        char temp = c[begin];
-                        c[begin] = c[end];
-                        c[end] = temp;
-
-                        begin++;
-                        end--;
-                    }
-
-                    begin = k + 1;
-                }
-
-                k++;
-            }
-
-            return new string(c);
-        }
-
-        public static List<string> Subsequences(string a)
-        {
-            List<string> list = new List<string>();
-
-            if (a.Length == 0)
-            {
-                return list;
-            }
-
-            if (a.Length == 1)
-            {
-                list.Add(a);
-
-                return list;
-            }
-
-            Subsequences(a, list, string.Empty);
-
-            return list;
-        }
-
-        private static void Subsequences(string a, List<string> list, string s)
-        {
-            if (a.Length == 0)
-            {
-                list.Add(s);
-                return;
-            }
-
-            Subsequences(a.Substring(1), list, s + a.Substring(0, 1));
-
-            Subsequences(a.Substring(1), list, s);
-        }
-
-        public static string ToBinary(string a)
-        {
-            if (a.Length == 0)
-            {
-                return string.Empty;
-            }
-
-            char[] c = a.ToCharArray();
-            string b = string.Empty;
-
-            for (int i = 0; i < c.Length; i++)
-            {
-                int d = c[i];
-                string s = string.Empty;
-
-                while (d > 1)
-                {
-                    s = (d % 2).ToString() + s;
-                    d = d / 2;
-                }
-
-                if (d == 1)
-                {
-                    s = "1" + s;
-                }
-
-                b = b + s + " ";
-            }
-
-            return b;
-        }
-
-        
-
     }
 }
