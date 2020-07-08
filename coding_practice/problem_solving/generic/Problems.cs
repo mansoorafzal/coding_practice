@@ -7,7 +7,7 @@ namespace coding_practice.problem_solving.generic
 {
     public static class Problems
     {
-        // Find all numbers till n where a^3 + b^3 = c^3 + d^3
+        // Find all numbers till n where a^3 + b^3 = c^3 + d^3.
         public static void AddCubes(int n, bool displayNumbers = false)
         {
             List<int[]> list = null;
@@ -573,6 +573,46 @@ namespace coding_practice.problem_solving.generic
             }
 
             return true;
+        }
+
+        // To find if braces, brackets and parantheses are opening and closing in correct order.
+        public static bool IsExpressionValid(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+            {
+                return true;
+            }
+
+            if (code.Length == 0)
+            {
+                return true;
+            }
+
+            data_structure.Stack<char> stack = new data_structure.Stack<char>();
+
+            foreach (char c in code)
+            {
+                if (c == '(' || c == '{' || c == '[')
+                {
+                    stack.Push(c);
+                }
+                else if (c == ')' || c == '}' || c == ']')
+                {
+                    if (stack.Count == 0)
+                    {
+                        return false;
+                    }
+
+                    char temp = stack.Pop();
+
+                    if (!((temp == '(' && c == ')') || (temp == '{' && c == '}') || (temp == '[' && c == ']')))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return stack.Count == 0 ? true : false;
         }
 
         // Calculate the greatest product in an N x N matrix by moving from top left to bottom and right.

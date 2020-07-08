@@ -43,8 +43,8 @@ namespace coding_practice.problem_solving.specific
 
         private static void Knapsack_Driver()
         {
-            Item<int>[] items = { new Item<int>(1, 6), new Item<int>(2, 10), new Item<int>(3, 12), new Item<int>(4, 15) };
-            int weight = 7;
+            Item<int>[] items = { new Item<int>(2, 20), new Item<int>(3, 8), new Item<int>(4, 12), new Item<int>(5, 15) };
+            int weight = 10;
 
             Knapsack.Resolve(items, weight);
         }

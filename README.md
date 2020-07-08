@@ -8,6 +8,7 @@ Code & Programming in C# .NET
     Binary Heap --> Min Binary Heap, Max Binary Heap
     Priority Queue
     Graph
+	NStack
 # Problem Solving (Specific)
     Combination
     Permutation
@@ -27,6 +28,7 @@ Code & Programming in C# .NET
     To find if two strings are correctly interleaved as available in third string.
     To find if a string is palindrome.
     To find if two strings are palindrome of each other.
+	To find if braces, brackets and parantheses are opening and closing in correct order.
     Calculate the greatest product in an N x N matrix by moving from top left to bottom and right.
     Search an item in N x M matrix where all rows and columns are sorted.
     Given N sorted arrays, merge them in to single sorted array.

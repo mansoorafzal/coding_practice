@@ -6,12 +6,13 @@ namespace coding_practice.data_structure
     public class _Driver
     {
         public static void Data_Structure_Driver()
-        {
+        {   
             //BinarySearchTree_Driver();
             //Graph_Driver();
             //LinkedList_Driver();
             //MaxBinaryHeap_Driver();
             //MinBinaryHeap_Driver();
+            //NStack_Driver();
             //PriorityQueue_Driver();
             //Queue_Driver();
             //Stack_Driver();
@@ -34,9 +35,13 @@ namespace coding_practice.data_structure
             binarySearchTree.Insert(22);
             binarySearchTree.Insert(11);
 
-            BinarySearchTree negative = new BinarySearchTree(1);
-            negative.Root.Left = new Node<int>(2);
-            negative.Root.Right = new Node<int>(3);
+            BinarySearchTree negative = new BinarySearchTree(50);
+            negative.Root.Left = new Node<int>(30);
+            negative.Root.Left.Left = new Node<int>(20);
+            negative.Root.Left.Right = new Node<int>(60);
+            negative.Root.Right = new Node<int>(80);
+            negative.Root.Right.Left = new Node<int>(70);
+            negative.Root.Right.Right = new Node<int>(90);
 
             binarySearchTree.CalculateAndPrintProperties(Constant.PropertyType.Height);
             binarySearchTree.CalculateAndPrintProperties(Constant.PropertyType.Size_Iterative);
@@ -160,6 +165,34 @@ namespace coding_practice.data_structure
             Console.WriteLine(minBinaryHeap.Remove());
 
             minBinaryHeap.GenerateAndPrintTraversal();
+        }
+
+        private static void NStack_Driver()
+        {
+            int totalStacks = 3;
+            int capacity = 5;
+
+            NStack<int> nStack = new NStack<int>(totalStacks, capacity);
+
+            nStack.Push(0, 2);
+            nStack.Push(1, 12);
+            nStack.Push(2, 22);
+
+            Console.WriteLine(nStack.Pop(1));
+            Console.WriteLine(nStack.Pop(0));
+
+            nStack.Push(2, 23);
+            nStack.Push(2, 24);
+            nStack.Push(0, 2);
+            nStack.Push(1, 12);
+            nStack.Push(1, 22);
+
+            Console.WriteLine(nStack.Pop(2));
+            Console.WriteLine(nStack.Pop(2));
+            Console.WriteLine(nStack.Pop(2));
+            Console.WriteLine(nStack.Pop(1));
+            Console.WriteLine(nStack.Pop(0));
+            Console.WriteLine(nStack.Pop(0));
         }
 
         private static void PriorityQueue_Driver()

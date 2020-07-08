@@ -1,5 +1,6 @@
 ﻿using coding_practice.helper;
 using coding_practice.problem_solving.generic;
+using System;
 
 namespace coding_practice.data_structure
 {
@@ -22,38 +23,40 @@ namespace coding_practice.data_structure
 
         public override void Insert(int item)
         {
+            Node<int> node = new Node<int>(item);
+
             if(Root == null)
             {
-                Root = new Node<int>(item);
+                Root = node;
             }
             else
             {
-                Insert(item, Root);
+                Insert(node, Root);
             }
         }
 
-        private void Insert(int item, Node<int> start)
-        {
-            if (item < start.Item)
+        protected void Insert(Node<int> node, Node<int> start)
+        {   
+            if (node.Item < start.Item)
             {
                 if (start.Left != null)
                 {
-                    Insert(item, start.Left);
+                    Insert(node, start.Left);
                 }
                 else
                 {
-                    start.Left = new Node<int>(item);
+                    start.Left = node;
                 }
             }
-            else if (item > start.Item)
+            else if (node.Item > start.Item)
             {
                 if (start.Right != null)
                 {
-                    Insert(item, start.Right);
+                    Insert(node, start.Right);
                 }
                 else
                 {
-                    start.Right = new Node<int>(item);
+                    start.Right = node;
                 }
             }
             else
@@ -101,41 +104,22 @@ namespace coding_practice.data_structure
 
         public override bool IsBinarySearchTree()
         {
-            if (Root != null)
-            {
-                return IsBinarySearchTree(Root.Item, Root);
-            }
-
-            return false;
+            return IsBinarySearchTree(Root, int.MinValue, int.MaxValue);
         }
 
-        private bool IsBinarySearchTree(int item, Node<int> start)
+        private bool IsBinarySearchTree(Node<int> start, int lower, int upper)
         {
-            if (start.Left != null)
+            if (start == null)
             {
-                if (item > start.Left.Item)
-                {
-                    return IsBinarySearchTree(start.Left.Item, start.Left);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        
-            if (start.Right != null)
-            {
-                if (item < start.Right.Item)
-                {
-                    return IsBinarySearchTree(start.Right.Item, start.Right);
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
 
-            return true;
+            if (start.Item < lower || start.Item > upper)
+            {
+                return false;
+            }
+
+            return IsBinarySearchTree(start.Left, lower, start.Item) && IsBinarySearchTree(start.Right, start.Item, upper);
         }
 
         public int PossibleBinarySearchTrees(int n)

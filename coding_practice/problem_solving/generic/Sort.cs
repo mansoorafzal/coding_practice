@@ -4,6 +4,7 @@ namespace coding_practice
 {
     public static class Sort
     {
+        // Merge Sort - Top Down Split
         public static void Merge(int[] N)
         {
             Utility<int>.DisplaArray(N);

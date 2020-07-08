@@ -9,7 +9,7 @@ namespace coding_practice.problem_solving.specific
             Console.WriteLine("Number Of Possible Ways: " + RecursivePossibleWays(C, a, C.Length));
             Console.WriteLine("Number Of Possible Ways: " + DynamicProgramingArrayPossibleWays(C, a));
             Console.WriteLine("Number Of Possible Ways: " + DynamicProgramingMatrixPossibleWays(C, a));
-            Console.WriteLine("Minimum Coins Required: " + RecursiveOptimalWay(C, a, C.Length));
+            Console.WriteLine("Minimum Coins Required: " + RecursiveOptimalWay(C, a));
             Console.WriteLine("Minimum Coins Required: " + DynamicProgramingArrayOptimalWay(C, a));
         }
 
@@ -104,7 +104,7 @@ namespace coding_practice.problem_solving.specific
             return table[C.Length][a];
         }
 
-        private static int RecursiveOptimalWay(int[] C, int a, int c)
+        private static int RecursiveOptimalWay(int[] C, int a)
         {
             if (a == 0)
             {
@@ -118,7 +118,7 @@ namespace coding_practice.problem_solving.specific
             {
                 if (C[i] <= a)
                 {
-                    count = RecursiveOptimalWay(C, a - C[i], c);
+                    count = RecursiveOptimalWay(C, a - C[i]);
 
                     if (count != int.MaxValue && count + 1 < result)
                     {
@@ -147,14 +147,11 @@ namespace coding_practice.problem_solving.specific
             {
                 for (int j = C[i]; j <= a; j++)
                 {
-                    if (C[i] <= j)
-                    {
-                        count = table[j - C[i]];
+                    count = table[j - C[i]];
 
-                        if (count != int.MaxValue && count + 1 < table[j])
-                        {
-                            table[j] = count + 1;
-                        }
+                    if (count != int.MaxValue && count + 1 < table[j])
+                    {
+                        table[j] = count + 1;
                     }
                 }
             }

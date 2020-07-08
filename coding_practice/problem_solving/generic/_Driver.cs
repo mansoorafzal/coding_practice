@@ -26,6 +26,7 @@ namespace coding_practice.problem_solving.generic
             //IsInterleaved_Driver();
             //IsOneStringPalindrome_Driver();
             //IsTwoStringsPalindrome_Driver();
+            //IsExpressionValid_Driver();
             //MatrixProduct_Driver();
             //MatrixSearch_Driver();
             //MergeNSortedArrays_Driver();
@@ -207,6 +208,13 @@ namespace coding_practice.problem_solving.generic
             Console.WriteLine(Problems.IsTwoStringsPalindrome(a, b));
         }
 
+        private static void IsExpressionValid_Driver()
+        {
+            string s = "([]{[]})[]{{}()}";
+
+            Console.WriteLine(Problems.IsExpressionValid(s));
+        }
+
         private static void MatrixProduct_Driver()
         {
             int[][] matrix = new int[][]
@@ -300,7 +308,17 @@ namespace coding_practice.problem_solving.generic
 
         private static void MergeSort_Driver()
         {
-            int[] N = { 7, 8, 0, 6, 5, 3, 2, 1, 4 };
+            int min = 1;
+            int max = 100;
+            int size = 10;
+            int[] N = new int[size];
+
+            Random random = new Random();
+
+            for (int i = 0; i < size; i++)
+            {
+                N[i] = random.Next(min, max);
+            }
 
             Sort.Merge(N);
         }

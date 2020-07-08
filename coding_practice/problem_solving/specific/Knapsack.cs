@@ -1,4 +1,5 @@
 ﻿using coding_practice.data_structure;
+using coding_practice.helper;
 using System;
 using System.Collections.Generic;
 
@@ -8,9 +9,10 @@ namespace coding_practice.problem_solving.specific
     {
         public static void Resolve(Item<int>[] items, int W)
         {
-            Console.WriteLine(Recursive(items, W, 0));
-            Console.WriteLine(RecursiveCache(items, W, 0));
-            Console.WriteLine(DynamicProgramingMatrix(items, W));
+            Console.WriteLine("0-1 Recursive: " + Recursive(items, W, 0));
+            Console.WriteLine("0-1 Recursive Cache: " + RecursiveCache(items, W, 0));
+            Console.WriteLine("0-1 Dynamic Programing: " + DynamicProgramingMatrix(items, W));
+            Console.WriteLine("Unbounded Dynamic Programing: " + DynamicProgramingArray(items, W));
         }
 
         public static int Recursive(Item<int>[] items, int W, int start)
@@ -92,11 +94,14 @@ namespace coding_practice.problem_solving.specific
 
             int[][] table = new int[items.Length + 1][];
 
-            // iterate vertically
             for (int y = 0; y <= items.Length; y++)
             {
                 table[y] = new int[W + 1];
+            }
 
+            // iterate vertically
+            for (int y = 0; y <= items.Length; y++)
+            {
                 if (y == 0)
                 {
                     continue;
@@ -116,9 +121,29 @@ namespace coding_practice.problem_solving.specific
                 }
             }
 
-            //Utility<int>.DisplayMatrix(table);
+            //Utility<int>.DisplayMatrix(table, 5);
 
             return table[items.Length][W];
+        }
+
+        public static int DynamicProgramingArray(Item<int>[] items, int W)
+        {
+            int[] table = new int[W + 1];
+
+            for (int i = 0; i <= W; i++)
+            {   
+                for (int j = 0; j < items.Length; j++)
+                {
+                    if (items[j].Weight <= i)
+                    {
+                        table[i] = Math.Max(table[i], table[i - items[j].Weight] + items[j].Value);
+                    }
+                }
+            }
+
+            //Utility<int>.DisplaArray(table, 5);
+
+            return table[W];
         }
     }
 }
