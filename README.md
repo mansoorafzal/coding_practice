@@ -9,6 +9,7 @@ Code & Programming in C# .NET
     Priority Queue
     Graph
 	NStack
+	Trie
 # Problem Solving (Specific)
     Combination
     Permutation
@@ -45,3 +46,4 @@ Code & Programming in C# .NET
     To Binary
 # Sort
     Merge Sort
+	Quick Sort

@@ -6,7 +6,7 @@ namespace coding_practice.data_structure
     public class _Driver
     {
         public static void Data_Structure_Driver()
-        {   
+        {
             //BinarySearchTree_Driver();
             //Graph_Driver();
             //LinkedList_Driver();
@@ -16,6 +16,7 @@ namespace coding_practice.data_structure
             //PriorityQueue_Driver();
             //Queue_Driver();
             //Stack_Driver();
+            //Trie_Driver();
         }
 
         private static void BinarySearchTree_Driver()
@@ -276,6 +277,36 @@ namespace coding_practice.data_structure
             stack.PushAtBottom(6);
             stack.PushAtBottom(7);
             stack.PrintRegular();
+        }
+
+        private static void Trie_Driver()
+        {
+            Trie<char> trie = new Trie<char>();
+
+            string sentence1 = "it is another try to add a trie once again.";
+            var current = trie;
+            foreach (char c in sentence1)
+            {
+                if (c == ' ' || c == '.')
+                {
+                    current.AddChild(Constant.EndMarker);
+                    current = trie;
+                    continue;
+                }
+
+                if (!current.HasChild(c))
+                {
+                    current.AddChild(c);
+                }
+
+                current = current.GetChild(c);
+            }
+
+            char i = 'i';
+            Console.WriteLine(i.ToString() + " is found and have " + trie.GetChild(i).Count + " child(ren)");
+
+            char a = 'a';
+            Console.WriteLine(a.ToString() + " is found and have " + trie.GetChild(a).Count + " child(ren)");
         }
     }
 }

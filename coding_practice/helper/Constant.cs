@@ -2,6 +2,8 @@
 {
     public static class Constant
     {
+        public const char EndMarker = '\0';
+
         public enum Duplicate
         {
             Handle = 0,

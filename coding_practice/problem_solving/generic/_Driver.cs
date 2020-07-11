@@ -35,8 +35,8 @@ namespace coding_practice.problem_solving.generic
             //ZeroMatrix_Driver();
             //ZeroSum_Driver();
 
-            MergeSort_Driver();
-            QuickSort_Driver();
+            //MergeSort_Driver();
+            //QuickSort_Driver();
         }
 
         #region Maths
