@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace coding_practice
-{
-
-    // TODO - not working (https://stattrek.com/online-calculator/combinations-permutations.aspx)
+{   
     public static class Permutation<T>
     {
         // nPr = n! / (n - r)!
@@ -82,7 +80,7 @@ namespace coding_practice
             else
             {
                 for (int i = 0; i < A.Length; i++)
-                {  
+                {
                     if (data.Length > 1 && start > 0 && start < data.Length)
                     {
                         if (duplicate && Utility<T>.Compare(data[start - 1], A[i]) != 0)
@@ -90,7 +88,7 @@ namespace coding_practice
                             duplicate = false;
                         }
                     }
-                    else
+                    else if (start > 0)
                     {
                         duplicate = false;
                     }

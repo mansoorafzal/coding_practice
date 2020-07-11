@@ -27,9 +27,10 @@ namespace coding_practice.problem_solving.specific
         private static void Combination_Driver()
         {
             int n = 4;
-            int r = 0;
+            int r = 2;
             int[] N = { 6, 7, 8, 9 };
             string[] S = { "W", "X", "Y", "Z" };
+            char[] C = { 'a', 'b', 'c', 'd' };
 
             Console.WriteLine(n + "C" + r + ": " + Combination<int>.NCR(n, r));
             Console.WriteLine(n + "C: " + Combination<int>.NCR(n));
@@ -39,6 +40,7 @@ namespace coding_practice.problem_solving.specific
 
             Combination<int>.Generate(N, r);
             Combination<string>.Generate(S, r);
+            Combination<char>.Generate(C, r);
         }
 
         private static void Knapsack_Driver()
@@ -55,6 +57,7 @@ namespace coding_practice.problem_solving.specific
             int r = 2;
             int[] N = { 6, 7, 8, 9 };
             string[] S = { "W", "X", "Y", "Z" };
+            char[] C = { 'a', 'b', 'c', 'd' };
 
             Console.WriteLine(n + "P" + r + ": " + Permutation<int>.NPR(n, r));
             Console.WriteLine(n + "P: " + Permutation<int>.NPR(n));
@@ -64,6 +67,7 @@ namespace coding_practice.problem_solving.specific
 
             Permutation<int>.Generate(N, r);
             Permutation<string>.Generate(S, r);
+            Permutation<char>.Generate(C, r);
         }
 
         private static void Sudoku_Driver()

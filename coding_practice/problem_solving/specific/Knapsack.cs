@@ -130,13 +130,13 @@ namespace coding_practice.problem_solving.specific
         {
             int[] table = new int[W + 1];
 
-            for (int i = 0; i <= W; i++)
-            {   
-                for (int j = 0; j < items.Length; j++)
+            for (int i = 0; i < items.Length; i++)
+            {
+                for (int j = 0; j <= W; j++)
                 {
-                    if (items[j].Weight <= i)
+                    if (items[i].Weight <= j)
                     {
-                        table[i] = Math.Max(table[i], table[i - items[j].Weight] + items[j].Value);
+                        table[j] = Math.Max(table[j], table[j - items[i].Weight] + items[i].Value);
                     }
                 }
             }

@@ -17,6 +17,11 @@ namespace coding_practice.helper
                 return Compare(Convert.ToString(t1), Convert.ToString(t2));
             }
 
+            if (typeof(T) == typeof(char))
+            {
+                return Compare(Convert.ToChar(t1), Convert.ToChar(t2));
+            }
+
             if (typeof(T) == typeof(Vertex))
             {
                 return Compare(((Vertex)(object)t1).Name, ((Vertex)(object)t2).Name);
@@ -53,6 +58,21 @@ namespace coding_practice.helper
         public static int Compare(string s1, string s2)
         {
             return s1.Equals(s2) ? 0 : -1;
+        }
+
+        public static int Compare(char c1, char c2)
+        {
+            if (c1 > c2)
+            {
+                return 1;
+            }
+
+            if (c1 < c2)
+            {
+                return -1;
+            }
+
+            return 0;
         }
 
         public static void Swap(ref T t1, ref T t2)

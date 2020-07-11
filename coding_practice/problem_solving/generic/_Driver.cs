@@ -35,7 +35,8 @@ namespace coding_practice.problem_solving.generic
             //ZeroMatrix_Driver();
             //ZeroSum_Driver();
 
-            //MergeSort_Driver();
+            MergeSort_Driver();
+            QuickSort_Driver();
         }
 
         #region Maths
@@ -310,7 +311,7 @@ namespace coding_practice.problem_solving.generic
         {
             int min = 1;
             int max = 100;
-            int size = 10;
+            int size = 15;
             int[] N = new int[size];
 
             Random random = new Random();
@@ -321,6 +322,23 @@ namespace coding_practice.problem_solving.generic
             }
 
             Sort.Merge(N);
+        }
+
+        private static void QuickSort_Driver()
+        {
+            int min = 1;
+            int max = 100;
+            int size = 15;
+            int[] N = new int[size];
+
+            Random random = new Random();
+
+            for (int i = 0; i < size; i++)
+            {
+                N[i] = random.Next(min, max);
+            }
+
+            Sort.Quick(N);
         }
 
         #endregion
